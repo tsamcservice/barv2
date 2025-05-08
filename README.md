@@ -94,3 +94,40 @@ DELETE /api/admin/cards/delete - 刪除卡片
 - LIFF 無法登入：確認 Vercel 網域設定
 - API 錯誤：檢查環境變數
 - 資料庫連線問題：確認 Supabase 設定 
+
+## 會員卡片圖片與 OG 頁設計
+
+- 會員上傳圖片會存放於 `/uploads/{line_user_id}/`，VIP 初始圖片存於 `/uploads/vip/`
+- 每位會員的卡片有獨立網址（如 `/og/{line_user_id}`），網址可用 LINE USER ID 編碼
+- OG 頁會自動產生 og:title、og:image、og:description 等 meta，支援 LINE/FB 等社群預覽
+- 每次訪問 OG 頁會自動統計瀏覽次數
+- 前端圖片上傳支援即時預覽，並自動產生對外連結 
+
+## Flex2html 預覽技術說明
+
+本專案使用 [PamornT/flex2html](https://github.com/PamornT/flex2html) 作為 LINE Flex Message 的即時預覽渲染器。
+
+### 引用方式
+- 於 `frontend/index.html` 及 `flex2html-test/preview.html` 皆以 CDN 方式引用：
+  - CSS: `https://cdn.jsdelivr.net/gh/PamornT/flex2html@main/css/flex2html.css`
+  - JS:  `https://cdn.jsdelivr.net/gh/PamornT/flex2html@main/js/flex2html.min.js`
+
+### 即時預覽
+- 主頁 (`frontend/index.html`) 於 Flex Message 欄位變更時，會即時呼叫 `flex2html('flex2html', currentCard)` 進行渲染。
+- 若 flex2html 尚未載入，會自動重試。
+
+### 另開視窗預覽
+- 點擊「另開視窗預覽」按鈕時，會將目前卡片 JSON 存入 localStorage（key: `flex2html-preview`），並開啟 `flex2html-test/preview.html`。
+- `preview.html` 會自動從 localStorage 讀取 JSON 並渲染。
+
+### flex2html-test/preview.html 用途
+- 提供與主頁分離的 Flex Message 預覽視窗，方便多視窗同步預覽。
+- 若 localStorage 無資料，會顯示錯誤提示。
+
+### 注意事項
+- flex2html 為泰國 LINE 官方工程師開發的半官方專案，渲染效果與 LINE App 可能略有差異，僅供設計參考。
+- 若需最終效果驗證，建議於 LINE 官方工具或 App 內測試。
+
+### 相關參考與引用
+- [PamornT/flex2html 官方 GitHub 專案](https://github.com/PamornT/flex2html)
+- [中文教學：在網頁上使用開源專案預覽 LINE Flex 訊息（均民部落格）](https://taichunmin.idv.tw/blog/2021-04-09-line-flex2html.html) 
