@@ -5,30 +5,60 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LINE Flex Message 編輯器</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/PamornT/flex2html@main/css/flex2html.css">
 </head>
 <body>
-    <div class="container">
-        <div class="editor-container">
-            <div class="editor-section">
-                <h2>Flex Message 編輯器</h2>
-                <div class="editor-tools">
-                    <button onclick="addComponent('box')">新增 Box</button>
-                    <button onclick="addComponent('text')">新增文字</button>
-                    <button onclick="addComponent('image')">新增圖片</button>
-                    <button onclick="addComponent('button')">新增按鈕</button>
-                </div>
-                <div id="editor" class="editor"></div>
-            </div>
-            <div class="preview-section">
-                <h2>即時預覽</h2>
-                <div id="preview" class="preview"></div>
-                <div class="preview-actions">
-                    <button onclick="saveCard()">儲存卡片</button>
-                    <button onclick="previewCard()">預覽卡片</button>
-                </div>
+    <div class="container" style="display:flex;gap:32px;align-items:flex-start;">
+        <form id="card-form" style="flex:1;max-width:400px;">
+            <h2>會員卡片欄位編輯</h2>
+            <label>主圖網址：<input type="text" id="mainImage" style="width:100%"></label><br><br>
+            <label>主標題：<input type="text" id="mainTitle" style="width:100%"></label><br><br>
+            <label>副標題：<input type="text" id="subTitle" style="width:100%"></label><br><br>
+            <label>頭像網址：<input type="text" id="avatar" style="width:100%"></label><br><br>
+            <label>頭像後連結：<input type="text" id="avatarLink" style="width:100%"></label><br><br>
+            <label>按鈕文字：<input type="text" id="buttonText" style="width:100%"></label><br><br>
+            <label>按鈕連結：<input type="text" id="buttonUrl" style="width:100%"></label><br><br>
+            <label>文字顏色：<input type="color" id="textColor" value="#000000"></label><br><br>
+            <label>會員名字：<input type="text" id="displayName" style="width:100%"></label><br><br>
+            <label>會員編號：<input type="text" id="memberId" style="width:100%"></label><br><br>
+            <button type="button" onclick="shareToLine()">分享給LINE好友</button>
+        </form>
+        <div class="preview-section" style="flex:1;min-width:350px;">
+            <h2>即時預覽</h2>
+            <button onclick="renderFlex2html()">顯示</button>
+            <button onclick="previewFlex2html()">另開視窗預覽</button>
+            <div id="flex2html" style="margin-bottom:16px;"></div>
+            <div id="preview" class="preview" style="background:#f8f8f8;padding:16px;border-radius:8px;"></div>
+            <div style="margin-top:10px;">
+                <strong>目前 JSON：</strong>
+                <pre id="json-view" style="background:#f8f8f8;padding:10px;border-radius:4px;"></pre>
             </div>
         </div>
     </div>
+    <div style="margin-top:30px;">
+        <h3>靜態 flex2html 測試區塊</h3>
+        <div id="test-flex"></div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/gh/PamornT/flex2html@main/js/flex2html.min.js"></script>
     <script src="js/editor.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@line/flex-message-renderer@1.5.0/dist/flex-renderer.min.js"></script>
+    <script>
+        var testJson = {
+            "type": "bubble",
+            "body": {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                    {
+                        "type": "text",
+                        "text": "Hello, World!",
+                        "weight": "bold",
+                        "size": "xl"
+                    }
+                ]
+            }
+        };
+        if (window.flex2html) flex2html('test-flex', testJson);
+    </script>
 </body>
 </html> 

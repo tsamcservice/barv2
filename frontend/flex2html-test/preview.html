@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <title>flex2html 預覽</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/PamornT/flex2html@main/css/flex2html.css">
+</head>
+<body>
+  <h2>flex2html 預覽視窗</h2>
+  <div id="test-flex"></div>
+  <script src="https://cdn.jsdelivr.net/gh/PamornT/flex2html@main/js/flex2html.min.js"></script>
+  <script>
+    function render() {
+      try {
+        var json = JSON.parse(localStorage.getItem('flex2html-preview'));
+        if (window.flex2html && json) flex2html('test-flex', json);
+      } catch (e) {
+        document.getElementById('test-flex').innerHTML = '<span style="color:red;">JSON 格式錯誤</span>';
+      }
+    }
+    window.addEventListener('focus', render);
+    render();
+  </script>
+</body>
+</html> 
