@@ -131,3 +131,15 @@ DELETE /api/admin/cards/delete - 刪除卡片
 ### 相關參考與引用
 - [PamornT/flex2html 官方 GitHub 專案](https://github.com/PamornT/flex2html)
 - [中文教學：在網頁上使用開源專案預覽 LINE Flex 訊息（均民部落格）](https://taichunmin.idv.tw/blog/2021-04-09-line-flex2html.html) 
+
+## 帳號與部署資訊
+
+### GitHub
+- 帳號 Email：tsamcservice@gmail.com
+- 使用者名稱：tsamcservice
+- 專案名稱：barv2
+
+### Vercel
+- 帳號 Email：tsamcservice@gmail.com
+- 使用者名稱：tsamcservice
+- Vercel ID：Bl4rZWibBD66RsmaaBtGN6js 
