@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Flex2HTML 測試頁面</title>
-    <script src="https://cdn.jsdelivr.net/npm/flex2html@latest/dist/flex2html.min.js"></script>
+    <script src="/js/flex2html.min.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -144,7 +144,7 @@
             const errorDiv = document.getElementById('error');
             try {
                 if (typeof flex2html === 'undefined') {
-                    throw new Error('flex2html 未正確載入，請檢查 CDN 連結');
+                    throw new Error('flex2html 未正確載入，請檢查本地 js 檔案');
                 }
                 flex2html.render(flexMessage, preview);
             } catch (e) {
