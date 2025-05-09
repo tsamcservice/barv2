@@ -140,13 +140,12 @@
 
         // 渲染 Flex Message 並加上錯誤提示
         window.onload = function() {
-            const preview = document.getElementById('preview');
             const errorDiv = document.getElementById('error');
             try {
                 if (typeof flex2html === 'undefined') {
                     throw new Error('flex2html 未正確載入，請檢查本地 js 檔案');
                 }
-                flex2html.render(flexMessage, preview);
+                flex2html("preview", flexMessage);
             } catch (e) {
                 errorDiv.textContent = '渲染失敗：' + e.message;
             }
