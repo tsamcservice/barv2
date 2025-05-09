@@ -26,7 +26,8 @@
 - 使用者名稱: tsamcservice
 - Vercel ID: Bl4rZWibBD66RsmaaBtGN6js
 - Project ID: prj_Oi63xzfzmf6TeJC4zU0AcE6N3ij5
-- 部署網域: https://barv2-tsamcservice.vercel.app
+- 部署網域: https://barv2-aubnk01tn-tsamcservices-projects.vercel.app
+- 測試頁面: https://barv2-aubnk01tn-tsamcservices-projects.vercel.app/test
 
 ## 檔案系統
 ```

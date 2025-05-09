@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Flex2HTML 測試頁面</title>
-    <script src="https://unpkg.com/@line/flex2html@1.0.0/dist/flex2html.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flex2html@latest/dist/flex2html.min.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -25,12 +25,17 @@
             padding: 20px;
             border-radius: 4px;
         }
+        .error {
+            color: red;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Flex2HTML 測試頁面</h1>
         <div class="preview-container" id="preview"></div>
+        <div class="error" id="error"></div>
     </div>
 
     <script>
@@ -80,6 +85,36 @@
                                 "align": "end"
                             }
                         ]
+                    },
+                    {
+                        "type": "box",
+                        "layout": "vertical",
+                        "margin": "lg",
+                        "spacing": "sm",
+                        "contents": [
+                            {
+                                "type": "box",
+                                "layout": "baseline",
+                                "spacing": "sm",
+                                "contents": [
+                                    {
+                                        "type": "text",
+                                        "text": "營業時間",
+                                        "color": "#aaaaaa",
+                                        "size": "sm",
+                                        "flex": 1
+                                    },
+                                    {
+                                        "type": "text",
+                                        "text": "10:00 - 23:00",
+                                        "wrap": true,
+                                        "color": "#666666",
+                                        "size": "sm",
+                                        "flex": 5
+                                    }
+                                ]
+                            }
+                        ]
                     }
                 ]
             },
@@ -103,10 +138,18 @@
             }
         };
 
-        // 渲染 Flex Message
+        // 渲染 Flex Message 並加上錯誤提示
         window.onload = function() {
             const preview = document.getElementById('preview');
-            flex2html.render(flexMessage, preview);
+            const errorDiv = document.getElementById('error');
+            try {
+                if (typeof flex2html === 'undefined') {
+                    throw new Error('flex2html 未正確載入，請檢查 CDN 連結');
+                }
+                flex2html.render(flexMessage, preview);
+            } catch (e) {
+                errorDiv.textContent = '渲染失敗：' + e.message;
+            }
         };
     </script>
 </body>
