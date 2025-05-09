@@ -150,3 +150,37 @@ DELETE /api/admin/cards/delete - 刪除卡片
 - LIFF 無法登入：確認 Vercel 網域設定
 - API 錯誤：檢查環境變數
 - 資料庫連線問題：確認 Supabase 設定 
+
+## Flex2HTML 預覽技術
+
+### 正確引用方式
+- CSS：
+  `<link rel="stylesheet" href="/js/flex2html.css">`
+- JS：
+  `<script src="/js/flex2html.min.js"></script>`
+- HTML：
+  `<div id="flex2html"></div>`
+- JS 呼叫：
+  `flex2html('flex2html', flexJson);`
+- Flex Message JSON 結構：
+  ```json
+  {
+    "type": "flex",
+    "altText": "Flex Message",
+    "contents": { ...bubble or carousel... }
+  }
+  ```
+
+### 來源與教學
+- [PamornT/flex2html GitHub](https://github.com/PamornT/flex2html)
+- [均民部落格教學](https://taichunmin.idv.tw/blog/2021-04-09-line-flex2html.html)
+
+### 常見錯誤與解法
+- **未顯示卡片**：Flex JSON 結構需有 `type: flex`、`altText`、`contents`。
+- **JS/CSS 未載入**：請確認 public/js/ 目錄下有正確檔案，且 HTML 正確引用。
+- **CDN 失效**：建議下載 JS/CSS 至本地，避免外部連結失效。
+
+### 測試頁面部署與驗證
+- 測試頁面：`/public/test.html`
+- Vercel 部署網址：`https://barv2-xxxxxx-tsamcservices-projects.vercel.app/test.html`
+- 驗證流程：每次修改後自動部署，並於 Vercel 頁面驗證預覽效果。 
