@@ -1,6 +1,61 @@
 # LINE Flex Message 即時編輯器 (barv2)
 
-這是一個獨立的 LINE Flex Message 即時編輯器專案，提供卡片編輯、預覽和管理功能。
+## 專案概述
+這是一個 LINE Flex Message 即時編輯器，支援卡片編輯、即時預覽、圖片上傳、OG 頁、會員專屬網址等功能。
+
+## 技術選型
+- **前端框架**: Next.js
+- **Flex Message 預覽**: [PamornT/flex2html](https://github.com/PamornT/flex2html)
+- **資料庫**: Supabase (PostgreSQL)
+- **部署平台**: 
+  - GitHub Pages (main 分支)
+  - Vercel (手動部署)
+
+## 系統架構
+詳細系統架構請參考 [系統架構文件](docs/system-architecture.md)
+
+## 帳號資訊
+### GitHub
+- 帳號: tsamcservice@gmail.com
+- 使用者名稱: tsamcservice
+- 專案名稱: barv2
+- 專案網址: https://github.com/tsamcservice/barv2
+
+### Vercel
+- 帳號: tsamcservice@gmail.com
+- 使用者名稱: tsamcservice
+- Vercel ID: Bl4rZWibBD66RsmaaBtGN6js
+- Project ID: prj_Oi63xzfzmf6TeJC4zU0AcE6N3ij5
+- 部署網域: https://barv2-tsamcservice.vercel.app
+
+## 檔案系統
+```
+/uploads/
+├── public/           # 公開圖片
+│   ├── templates/    # 範本圖片
+│   └── shared/       # 共享圖片
+├── vip/             # VIP 會員專用
+│   └── {user_id}/   # 各會員專屬目錄
+└── private/         # 私人圖片
+    └── {user_id}/   # 各會員私人目錄
+```
+
+## 開發與部署流程
+1. 所有開發都在 main 分支進行
+2. 每次更新都會自動同步到 main 分支
+3. 部署流程：
+   - GitHub: 自動同步到 main 分支
+   - Vercel: 手動部署
+
+## 引用來源
+- [PamornT/flex2html](https://github.com/PamornT/flex2html) - Flex Message 預覽技術
+- [均民部落格教學](https://www.junmin.tw/) - Flex Message 設計參考
+
+## 環境變數設定
+請參考 [系統架構文件](docs/system-architecture.md) 中的環境變數設定章節。
+
+## 安全性考量
+請參考 [系統架構文件](docs/system-architecture.md) 中的安全性考量章節。
 
 ## 專案結構
 
