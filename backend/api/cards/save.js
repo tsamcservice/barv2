@@ -2,7 +2,7 @@ import { createClient } from '@supabase/supabase-js';
 
 const supabase = createClient(
     process.env.SUPABASE_URL,
-    process.env.SUPABASE_KEY
+    process.env.SUPABASE_ANON_KEY
 );
 
 export default async function handler(req, res) {
@@ -11,36 +11,32 @@ export default async function handler(req, res) {
     }
 
     try {
-        const { content, type } = req.body;
-
-        if (!content || !type) {
+        const card = req.body;
+        if (!card || !card.user_id) {
             return res.status(400).json({ success: false, message: '缺少必要參數' });
         }
-
-        const { data, error } = await supabase
-            .from('cards')
-            .insert([
-                {
-                    content,
-                    type,
-                    user_id: 'admin' // 暫時使用固定值
-                }
-            ])
-            .select();
-
-        if (error) {
-            throw error;
+        let result;
+        if (card.id) {
+            // 更新
+            const { data, error } = await supabase
+                .from('member_cards')
+                .update({ ...card, updated_at: new Date() })
+                .eq('id', card.id)
+                .select();
+            if (error) throw error;
+            result = data[0];
+        } else {
+            // 新增
+            const { data, error } = await supabase
+                .from('member_cards')
+                .insert([{ ...card, created_at: new Date(), updated_at: new Date() }])
+                .select();
+            if (error) throw error;
+            result = data[0];
         }
-
-        return res.status(200).json({
-            success: true,
-            cardId: data[0].id
-        });
+        return res.status(200).json({ success: true, card: result });
     } catch (error) {
         console.error('儲存卡片錯誤：', error);
-        return res.status(500).json({
-            success: false,
-            message: '儲存卡片時發生錯誤'
-        });
+        return res.status(500).json({ success: false, message: '儲存卡片時發生錯誤' });
     }
 } 

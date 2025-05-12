@@ -2,7 +2,7 @@ import { createClient } from '@supabase/supabase-js';
 
 const supabase = createClient(
     process.env.SUPABASE_URL,
-    process.env.SUPABASE_KEY
+    process.env.SUPABASE_ANON_KEY
 );
 
 export default async function handler(req, res) {
@@ -19,7 +19,7 @@ export default async function handler(req, res) {
 
         // 先檢查卡片是否存在且屬於該使用者
         const { data: card, error: fetchError } = await supabase
-            .from('cards')
+            .from('member_cards')
             .select('*')
             .eq('id', cardId)
             .eq('user_id', userId)
@@ -34,7 +34,7 @@ export default async function handler(req, res) {
 
         // 刪除卡片
         const { error: deleteError } = await supabase
-            .from('cards')
+            .from('member_cards')
             .delete()
             .eq('id', cardId);
 

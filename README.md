@@ -99,10 +99,16 @@
 
 ### 2. 環境變數設定
 ```
-SUPABASE_URL=您的 Supabase URL
-SUPABASE_KEY=您的 Supabase Key
+SUPABASE_URL=https://ijuazjipzgsxtkfmundr.supabase.co
+SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlqdWF6amlwemdzeHRrZm11bmRyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY3ODUzMjUsImV4cCI6MjA2MjM2MTMyNX0.FrSppTXpYhx9Co-eBbl1zEHQYiOS4kEocNQHgTmxXr8
 LIFF_ID=2007327814-BdWpj70m
 ```
+
+#### 設定說明
+1. 登入 Vercel，進入專案 Settings → Environment Variables。
+2. 新增 `SUPABASE_URL` 與 `SUPABASE_ANON_KEY`，值如上。
+3. 設定完成後請重新部署專案。
+4. 若本地開發，請於 `.env.local` 也加入上述變數。
 
 ### 3. LINE 設定
 - LIFF ID: 2007327814-BdWpj70m
@@ -184,3 +190,89 @@ DELETE /api/admin/cards/delete - 刪除卡片
 - 測試頁面：`/public/test.html`
 - Vercel 部署網址：`https://barv2-xxxxxx-tsamcservices-projects.vercel.app/test.html`
 - 驗證流程：每次修改後自動部署，並於 Vercel 頁面驗證預覽效果。 
+
+## 會員卡片與宣傳卡片資料結構
+
+### 會員卡片（member_cards）
+- id (UUID, PK)
+- user_id (UUID, FK)
+- card_title
+- main_image_url
+- main_image_link
+- snow_image_url
+- calendar_image_url
+- amember_id
+- pageview (int, default 0)
+- main_title_1
+- main_title_1_color
+- main_title_2
+- main_title_2_color
+- member_image_url
+- member_image_link
+- display_name
+- name_color1
+- name_color2
+- button_1_text
+- button_1_url
+- button_1_color
+- s_button_text
+- s_button_url
+- s_button_color
+- created_at
+- updated_at
+
+#### 規則
+- 每個會員可有多組卡片（每個網頁一組）
+- 每組卡片可累計瀏覽次數
+
+### 宣傳卡片（promo_cards）
+- id (UUID, PK)
+- user_id (UUID, FK)
+- card_id (UUID, FK)  // 所屬會員卡片
+- json_content (JSONB)
+- sort_order (int)
+- created_at
+- updated_at
+
+#### 規則
+- 每組會員卡片可不選、可多選宣傳卡片
+- 宣傳卡片可調整左右順序
+
+### 會員資料表（users）
+- id (UUID, PK)
+- line_user_id
+- email
+- display_name
+- avatar_url
+- created_at
+- updated_at
+
+### 頁面互動邏輯
+- 會員登入（LINE LIFF）後可管理多組卡片
+- 每組卡片可即時編修、預覽、儲存
+- 宣傳卡片可多選、排序，並與主卡片一起預覽
+- 每組卡片有獨立瀏覽次數累計 
+
+## 會員卡片自動查詢/自動建立邏輯
+1. 使用者經由 LINE LIFF 登入（且已加好友）。
+2. 前端取得 LINE userId，呼叫 `/api/cards/list?userId=xxx` 查詢會員卡片。
+3. 若查無資料：自動建立一筆「初始會員卡片」與預設宣傳卡片，並帶入表單。
+4. 若有資料：自動帶入該會員已存檔的卡片內容。
+5. 使用者可直接編修、即時預覽、儲存。
+
+## 初始卡片資料抽離設計
+- 所有卡片型態的初始資料皆集中於 JS 變數 `defaultCards`，未來可輕鬆擴充多種卡片型態。
+- 例如：
+```js
+const defaultCards = {
+  member: { ... },
+  event: { ... },
+  ...
+};
+```
+- 新增卡片型態時只需擴充 `defaultCards` 物件。
+
+## API 路徑與錯誤處理設計
+- 所有 API 路徑皆以 `/api/` 開頭，Vercel 路由設定已優先導向 API，避免被靜態頁面覆蓋。
+- 前端 fetch API 時會檢查回應的 content-type，若非 JSON 或 HTTP 狀態非 200，會顯示友善錯誤訊息。
+- 例外狀況（如 API 連線失敗、資料庫連線失敗）會彈窗提示，方便 debug。 
